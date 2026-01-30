@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Financeiro Pessoal - MVP</title>
+  <style>
+    :root {
+      --bg: #f7f7f7;
+      --card: #ffffff;
+      --text: #222;
+      --border: #ddd;
+      --primary: #2f80ed;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    header {
+      background: var(--card);
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    nav {
+      display: flex;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    nav button {
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      cursor: pointer;
+    }
+
+    .container {
+      padding: 20px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 6px;
+      margin-top: 4px;
+    }
+
+    button.primary {
+      margin-top: 15px;
+      padding: 8px 12px;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      border-bottom: 1px solid var(--border);
+      padding: 6px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Financeiro Pessoal (MVP)</h1>
+  <nav>
+    <button onclick="showScreen('dashboard')">Dashboard</button>
+    <button onclick="showScreen('lancamento')">Lançamento</button>
+    <button onclick="showScreen('extrato')">Extrato</button>
+  </nav>
+</header>
+
+<div class="container">
+
+  <!-- DASHBOARD -->
+  <div id="dashboard" class="screen">
+    <div class="card">
+      <h3>Saldo Total</h3>
+      <div id="saldoTotal">R$ 0,00</div>
+    </div>
+
+    <div class="card">
+      <h3>Contas</h3>
+      <ul id="listaContas"></ul>
+    </div>
+  </div>
+
+  <!-- LANÇAMENTO -->
+  <div id="lancamento" class="screen hidden">
+    <div class="card">
+      <h3>Novo Lançamento</h3>
+
+      <label>Tipo</label>
+      <select id="tipo">
+        <option value="INCOME">Receita</option>
+        <option value="EXPENSE">Despesa</option>
+        <option value="TRANSFER">Transferência</option>
+      </select>
+
+      <label>Data</label>
+      <input type="date" id="data" />
+
+      <label>Valor</label>
+      <input type="number" id="valor" />
+
+      <label>Conta Origem</label>
+      <input type="text" id="contaOrigem" />
+
+      <label>Conta Destino</label>
+      <input type="text" id="contaDestino" />
+
+      <label>Descrição</label>
+      <input type="text" id="descricao" />
+
+      <button class="primary" onclick="salvarLancamento()">Salvar</button>
+    </div>
+  </div>
+
+  <!-- EXTRATO -->
+  <div id="extrato" class="screen hidden">
+    <div class="card">
+      <h3>Extrato</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Descrição</th>
+            <th>Valor</th>
+          </tr>
+        </thead>
+        <tbody id="tabelaExtrato"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+    document.getElementById(id).classList.remove('hidden');
+  }
+
+  function salvarLancamento() {
+    alert('Aqui chamaremos a API (POST /events)');
+  }
+</script>
+
+</body>
+</html>
