@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Financeiro Pessoal - MVP</title>
+  <title>project.flow - mvp</title>
   <style>
     :root {
       --bg: #f7f7f7;
@@ -11,171 +11,85 @@
       --border: #ddd;
       --primary: #2f80ed;
     }
-
-    body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-    }
-
-    header {
-      background: var(--card);
-      padding: 12px 20px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 18px;
-    }
-
-    nav {
-      display: flex;
-      gap: 10px;
-      margin-top: 8px;
-    }
-
-    nav button {
-      padding: 6px 10px;
-      border: 1px solid var(--border);
-      background: var(--card);
-      cursor: pointer;
-    }
-
-    .container {
-      padding: 20px;
-    }
-
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      padding: 15px;
-      margin-bottom: 15px;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    label {
-      display: block;
-      margin-top: 10px;
-    }
-
-    input, select {
-      width: 100%;
-      padding: 6px;
-      margin-top: 4px;
-    }
-
-    button.primary {
-      margin-top: 15px;
-      padding: 8px 12px;
-      background: var(--primary);
-      color: #fff;
-      border: none;
-      cursor: pointer;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    th, td {
-      border-bottom: 1px solid var(--border);
-      padding: 6px;
-      text-align: left;
-    }
+    body { margin:0; font-family: Arial, Helvetica, sans-serif; background:var(--bg); color:var(--text);}    
+    header { background:var(--card); padding:12px 20px; border-bottom:1px solid var(--border);}    
+    nav button { margin-right:6px; }
+    .container { padding:20px; }
+    .card { background:var(--card); border:1px solid var(--border); padding:15px; margin-bottom:15px; }
+    .hidden { display:none; }
+    label { display:block; margin-top:8px; }
+    input, select { width:100%; padding:6px; }
+    button { padding:6px 10px; margin-top:10px; }
+    table { width:100%; border-collapse:collapse; }
+    th, td { border-bottom:1px solid var(--border); padding:6px; }
   </style>
 </head>
 <body>
-
 <header>
-  <h1>Financeiro Pessoal (MVP)</h1>
+  <h2>Financeiro Pessoal (MVP)</h2>
   <nav>
     <button onclick="showScreen('dashboard')">Dashboard</button>
+    <button onclick="showScreen('contas')">Contas</button>
     <button onclick="showScreen('lancamento')">Lançamento</button>
     <button onclick="showScreen('extrato')">Extrato</button>
   </nav>
 </header>
-
 <div class="container">
 
-  <!-- DASHBOARD -->
-  <div id="dashboard" class="screen">
-    <div class="card">
-      <h3>Saldo Total</h3>
-      <div id="saldoTotal">R$ 0,00</div>
-    </div>
+<div id="dashboard" class="screen">
+  <div class="card"><h3>Saldo Total</h3><div id="saldoTotal">-</div></div>
+  <div class="card"><h3>Contas</h3><ul id="listaContas"></ul></div>
+</div>
 
-    <div class="card">
-      <h3>Contas</h3>
-      <ul id="listaContas"></ul>
-    </div>
+<div id="contas" class="screen hidden">
+  <div class="card">
+    <h3>Criar Conta</h3>
+    <label>Nome</label><input id="accNome" />
+    <label>Tipo</label><input id="accTipo" />
+    <label>Natureza</label>
+    <select id="accNatureza"><option value="ATIVO">Ativo</option><option value="PASSIVO">Passivo</option></select>
+    <label>Saldo Inicial</label><input type="number" id="accSaldo" />
+    <button onclick="criarConta()">Salvar Conta</button>
   </div>
+</div>
 
-  <!-- LANÇAMENTO -->
-  <div id="lancamento" class="screen hidden">
-    <div class="card">
-      <h3>Novo Lançamento</h3>
-
-      <label>Tipo</label>
-      <select id="tipo">
-        <option value="INCOME">Receita</option>
-        <option value="EXPENSE">Despesa</option>
-        <option value="TRANSFER">Transferência</option>
-      </select>
-
-      <label>Data</label>
-      <input type="date" id="data" />
-
-      <label>Valor</label>
-      <input type="number" id="valor" />
-
-      <label>Conta Origem</label>
-      <input type="text" id="contaOrigem" />
-
-      <label>Conta Destino</label>
-      <input type="text" id="contaDestino" />
-
-      <label>Descrição</label>
-      <input type="text" id="descricao" />
-
-      <button class="primary" onclick="salvarLancamento()">Salvar</button>
-    </div>
+<div id="lancamento" class="screen hidden">
+  <div class="card">
+    <h3>Novo Lançamento</h3>
+    <label>Tipo</label>
+    <select id="tipo"><option value="INCOME">Receita</option><option value="EXPENSE">Despesa</option><option value="TRANSFER">Transferência</option></select>
+    <label>Data</label><input type="date" id="data" />
+    <label>Valor</label><input type="number" id="valor" />
+    <label>Conta Origem</label><input id="contaOrigem" />
+    <label>Conta Destino</label><input id="contaDestino" />
+    <label>Descrição</label><input id="descricao" />
+    <button onclick="salvarLancamento()">Salvar</button>
   </div>
+</div>
 
-  <!-- EXTRATO -->
-  <div id="extrato" class="screen hidden">
-    <div class="card">
-      <h3>Extrato</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Data</th>
-            <th>Descrição</th>
-            <th>Valor</th>
-          </tr>
-        </thead>
-        <tbody id="tabelaExtrato"></tbody>
-      </table>
-    </div>
+<div id="extrato" class="screen hidden">
+  <div class="card">
+    <h3>Extrato</h3>
+    <table><thead><tr><th>Data</th><th>Descrição</th><th>Valor</th></tr></thead><tbody id="tabelaExtrato"></tbody></table>
   </div>
-
+</div>
 </div>
 
 <script>
-  function showScreen(id) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
-    document.getElementById(id).classList.remove('hidden');
-  }
+const API_URL = "https://script.google.com/macros/s/AKfycbxbzZfRN1iHIriY-clWryPlktin9Rna4CvDsQ1kTP6eiO1a3GI534ecQfoxnjBcfG__/exec";
+const USER_ID = "mvp";
 
-  function salvarLancamento() {
-    alert('Aqui chamaremos a API (POST /events)');
-  }
+function showScreen(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden')); document.getElementById(id).classList.remove('hidden'); if(id==='dashboard')loadDashboard(); if(id==='extrato')loadExtrato(); }
+
+async function loadDashboard(){ const r=await fetch(`${API_URL}?action=dashboard&user_id=${USER_ID}`); const d=await r.json(); document.getElementById('saldoTotal').innerText=`R$ ${Number(d.total_balance).toFixed(2)}`; const ul=document.getElementById('listaContas'); ul.innerHTML=''; d.accounts.forEach(c=>{const li=document.createElement('li'); li.innerText=`${c.name}: R$ ${Number(c.balance).toFixed(2)}`; ul.appendChild(li);}); }
+
+async function criarConta(){ const p={ user_id:USER_ID, name:accNome.value, type:accTipo.value, natureza:accNatureza.value, saldo_inicial:Number(accSaldo.value) }; await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'createAccount',...p})}); alert('Conta criada'); showScreen('dashboard'); }
+
+async function salvarLancamento(){ const payload={ user_id:USER_ID, event_definition_id:tipo.value, date:data.value, amount:Number(valor.value), description:descricao.value, objects:[] }; if(tipo.value==='INCOME') payload.objects.push({id:contaDestino.value,effect:'CASH_IN'}); if(tipo.value==='EXPENSE') payload.objects.push({id:contaOrigem.value,effect:'CASH_OUT'}); if(tipo.value==='TRANSFER'){ payload.objects.push({id:contaOrigem.value,effect:'CASH_OUT'}); payload.objects.push({id:contaDestino.value,effect:'CASH_IN'});} await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}); alert('Lançamento salvo'); showScreen('dashboard'); }
+
+async function loadExtrato(){ const r=await fetch(`${API_URL}?action=events&user_id=${USER_ID}`); const d=await r.json(); const tb=document.getElementById('tabelaExtrato'); tb.innerHTML=''; d.forEach(e=>{ const tr=document.createElement('tr'); tr.innerHTML=`<td>${e.data_evento}</td><td>${e.descricao}</td><td>${Number(e.valor).toFixed(2)}</td>`; tb.appendChild(tr);}); }
+
+showScreen('dashboard');
 </script>
-
 </body>
 </html>
