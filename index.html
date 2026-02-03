@@ -83,7 +83,7 @@ function showScreen(id){ document.querySelectorAll('.screen').forEach(s=>s.class
 
 async function loadDashboard(){ const r=await fetch(`${API_URL}?action=dashboard&user_id=${USER_ID}`); const d=await r.json(); document.getElementById('saldoTotal').innerText=`R$ ${Number(d.total_balance).toFixed(2)}`; const ul=document.getElementById('listaContas'); ul.innerHTML=''; d.accounts.forEach(c=>{const li=document.createElement('li'); li.innerText=`${c.name}: R$ ${Number(c.balance).toFixed(2)}`; ul.appendChild(li);}); }
 
-async function criarConta(){ const p={ user_id:USER_ID, name:accNome.value, type:accTipo.value, natureza:accNatureza.value, saldo_inicial:Number(accSaldo.value) }; await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'createAccount',...p})}); alert('Conta criada'); showScreen('dashboard'); }
+async function criarConta(){ const p={ user_id:USER_ID, name:accNome.value, type:accTipo.value, natureza:accNatureza.value, saldo_inicial:Number(accSaldo.value) }; await fetch(API_URL,{method:'POST',body:JSON.stringify({action:'createAccount',...p})}); alert('Conta criada'); showScreen('dashboard'); }
 
 async function salvarLancamento(){ const payload={ user_id:USER_ID, event_definition_id:tipo.value, date:data.value, amount:Number(valor.value), description:descricao.value, objects:[] }; if(tipo.value==='INCOME') payload.objects.push({id:contaDestino.value,effect:'CASH_IN'}); if(tipo.value==='EXPENSE') payload.objects.push({id:contaOrigem.value,effect:'CASH_OUT'}); if(tipo.value==='TRANSFER'){ payload.objects.push({id:contaOrigem.value,effect:'CASH_OUT'}); payload.objects.push({id:contaDestino.value,effect:'CASH_IN'});} await fetch(API_URL,{method:'POST',body:JSON.stringify(payload)}); alert('Lançamento salvo'); showScreen('dashboard'); }
 
@@ -93,5 +93,6 @@ showScreen('dashboard');
 </script>
 </body>
 </html>
+
 
 
